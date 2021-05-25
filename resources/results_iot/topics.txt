@@ -1,0 +1,60 @@
+[(0,
+  '0.015*"email" + 0.014*"send" + 0.014*"promotional" + 0.013*"communication" '
+  '+ 0.012*"marketing" + 0.012*"opt" + 0.012*"product" + 0.011*"service" + '
+  '0.010*"message" + 0.010*"list"'),
+ (1,
+  '0.020*"party" + 0.020*"third" + 0.015*"service" + 0.010*"information" + '
+  '0.010*"privacy" + 0.010*"website" + 0.009*"share" + 0.009*"policy" + '
+  '0.009*"site" + 0.009*"advertising"'),
+ (2,
+  '0.044*"removed" + 0.031*"href" + 0.023*"hyperref" + 0.021*"question" + '
+  '0.019*"contact" + 0.018*"privacy" + 0.014*"u" + 0.013*"please" + '
+  '0.011*"policy" + 0.010*"comment"'),
+ (3,
+  '0.021*"cooky" + 0.017*"device" + 0.013*"browser" + 0.010*"service" + '
+  '0.010*"address" + 0.010*"website" + 0.009*"site" + 0.009*"collect" + '
+  '0.009*"information" + 0.009*"use"'),
+ (4,
+  '0.016*"child" + 0.012*"age" + 0.012*"13" + 0.010*"entering" + '
+  '0.008*"detection" + 0.007*"year" + 0.007*"fill" + 0.007*"redirected" + '
+  '0.007*"show" + 0.006*"knowingly"'),
+ (5,
+  '0.023*"sensor" + 0.015*"educational" + 0.014*"suggestion" + 0.011*"top" + '
+  '0.010*"acquirer" + 0.009*"mailing" + 0.009*"employment" + 0.008*"job" + '
+  '0.008*"taking" + 0.007*"clickstream"'),
+ (6,
+  '0.019*"corporate" + 0.015*"automated" + 0.012*"storefrontdigest" + '
+  '0.012*"indefinite" + 0.012*"personalization" + 0.011*"direction" + '
+  '0.010*"administrator" + 0.010*"token" + 0.010*"shop" + 0.010*"employed"'),
+ (7,
+  '0.016*"data" + 0.014*"personal" + 0.012*"right" + 0.012*"request" + '
+  '0.011*"processing" + 0.009*"information" + 0.009*"necessary" + '
+  '0.008*"legal" + 0.008*"purpose" + 0.008*"law"'),
+ (8,
+  '0.017*"sponsor" + 0.010*"push" + 0.010*"reply" + 0.010*"default" + '
+  '0.009*"swiss" + 0.008*"desire" + 0.008*"becoming" + 0.008*"correspondence" '
+  '+ 0.008*"calling" + 0.008*"representative"'),
+ (9,
+  '0.012*"asset" + 0.011*"service" + 0.010*"product" + 0.009*"merger" + '
+  '0.009*"company" + 0.009*"item" + 0.008*"list" + 0.008*"business" + '
+  '0.008*"another" + 0.007*"referral"'),
+ (10,
+  '0.013*"erasure" + 0.012*"unaffiliated" + 0.011*"input" + '
+  '0.010*"approximate" + 0.010*"format" + 0.009*"appliance" + 0.009*"pref" + '
+  '0.009*"persistent" + 0.009*"canadian" + 0.008*"short"'),
+ (11,
+  '0.013*"address" + 0.012*"name" + 0.010*"information" + 0.009*"account" + '
+  '0.009*"email" + 0.009*"promotion" + 0.008*"password" + 0.008*"u" + '
+  '0.008*"collect" + 0.008*"contact"'),
+ (12,
+  '0.014*"security" + 0.013*"protect" + 0.013*"safety" + 0.009*"hosted" + '
+  '0.009*"secure" + 0.009*"violate" + 0.009*"property" + 0.008*"others" + '
+  '0.007*"technical" + 0.007*"law"'),
+ (13,
+  '0.024*"california" + 0.017*"state" + 0.016*"resident" + 0.016*"institution" '
+  '+ 0.014*"law" + 0.013*"united" + 0.012*"ccpa" + 0.012*"right" + '
+  '0.011*"request" + 0.011*"country"'),
+ (14,
+  '0.026*"change" + 0.017*"policy" + 0.017*"privacy" + 0.011*"statement" + '
+  '0.011*"time" + 0.010*"notice" + 0.010*"pci" + 0.009*"payment" + 0.008*"ds" '
+  '+ 0.008*"update"')]

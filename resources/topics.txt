@@ -1,0 +1,60 @@
+[(0,
+  '0.007*"service" + 0.006*"friend" + 0.005*"story" + 0.004*"child" + '
+  '0.004*"cooky" + 0.004*"use" + 0.004*"product" + 0.004*"email" + '
+  '0.004*"compromised" + 0.004*"card"'),
+ (1,
+  '0.004*"schedule" + 0.004*"channel" + 0.003*"analytic" + 0.003*"happy" + '
+  '0.003*"website" + 0.003*"gather" + 0.003*"address" + 0.003*"mingle" + '
+  '0.003*"moreover" + 0.003*"identifiable"'),
+ (2,
+  '0.006*"collect" + 0.006*"credit" + 0.006*"card" + 0.005*"u" + '
+  '0.005*"address" + 0.005*"pursuant" + 0.004*"email" + 0.004*"service" + '
+  '0.004*"personal" + 0.004*"may"'),
+ (3,
+  '0.006*"state" + 0.006*"united" + 0.005*"asset" + 0.005*"website" + '
+  '0.004*"policy" + 0.004*"personal" + 0.004*"privacy" + 0.004*"party" + '
+  '0.004*"third" + 0.004*"sm"'),
+ (4,
+  '0.007*"security" + 0.006*"personal" + 0.005*"rating" + 0.005*"site" + '
+  '0.005*"u" + 0.005*"disclosure" + 0.004*"service" + 0.004*"policy" + '
+  '0.004*"physical" + 0.004*"third"'),
+ (5,
+  '0.006*"party" + 0.006*"third" + 0.006*"child" + 0.005*"service" + '
+  '0.005*"cooky" + 0.005*"personal" + 0.005*"personally" + 0.005*"site" + '
+  '0.004*"company" + 0.004*"identifiable"'),
+ (6,
+  '0.007*"service" + 0.007*"website" + 0.006*"personal" + 0.006*"site" + '
+  '0.006*"cooky" + 0.005*"party" + 0.005*"third" + 0.005*"data" + 0.005*"use" '
+  '+ 0.005*"u"'),
+ (7,
+  '0.007*"personal" + 0.006*"service" + 0.004*"account" + 0.004*"information" '
+  '+ 0.004*"site" + 0.004*"device" + 0.004*"u" + 0.004*"may" + 0.004*"provide" '
+  '+ 0.004*"use"'),
+ (8,
+  '0.008*"device" + 0.007*"resume" + 0.006*"message" + 0.005*"policy" + '
+  '0.005*"privacy" + 0.005*"social" + 0.004*"service" + 0.004*"site" + '
+  '0.004*"website" + 0.004*"networking"'),
+ (9,
+  '0.008*"opt" + 0.006*"collect" + 0.006*"site" + 0.006*"third" + '
+  '0.006*"advertising" + 0.006*"personal" + 0.006*"party" + 0.006*"service" + '
+  '0.006*"u" + 0.005*"privacy"'),
+ (10,
+  '0.025*"military" + 0.011*"change" + 0.006*"policy" + 0.006*"time" + '
+  '0.006*"site" + 0.006*"web" + 0.006*"page" + 0.006*"privacy" + 0.006*"cooky" '
+  '+ 0.004*"post"'),
+ (11,
+  '0.006*"navigating" + 0.005*"service" + 0.004*"google" + 0.004*"non" + '
+  '0.004*"adsense" + 0.004*"nielsen" + 0.004*"account" + 0.004*"collect" + '
+  '0.004*"device" + 0.004*"privacy"'),
+ (12,
+  '0.008*"station" + 0.006*"feedback" + 0.005*"service" + 0.005*"consented" + '
+  '0.005*"java" + 0.004*"script" + 0.004*"merchant" + 0.004*"cooky" + '
+  '0.003*"child" + 0.003*"st"'),
+ (13,
+  '0.013*"cooky" + 0.006*"service" + 0.006*"third" + 0.006*"party" + '
+  '0.006*"site" + 0.006*"website" + 0.005*"california" + 0.005*"flash" + '
+  '0.005*"use" + 0.005*"technology"'),
+ (14,
+  '0.011*"child" + 0.008*"13" + 0.006*"forum" + 0.005*"trade" + 0.005*"age" + '
+  '0.005*"pii" + 0.004*"conversation" + 0.004*"chat" + 0.004*"branded" + '
+  '0.004*"personal"')]

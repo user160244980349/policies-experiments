@@ -1,0 +1,19 @@
+# Resources
+#/resources
+
+# External libraries
+/venv
+
+# IDE configuration
+/.idea
+/.vscode
+
+# Local configuration
+config.py
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# DB files
+*.db
