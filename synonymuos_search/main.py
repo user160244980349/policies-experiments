@@ -1,4 +1,3 @@
-
 import nltk
 import nltk.tree
 
@@ -9,7 +8,6 @@ from legacy.synonymuos_search import convert_dictionary, dictionary_to_bag, do_l
 
 
 def main():
-
     initialize()
 
     # sentence = "you give us information about your location"
@@ -19,8 +17,8 @@ def main():
     # sentence = "All work and no play makes jack dull boy"
     # sentence = "we may also collect technical information to help us identify your device for fraud prevention and diagnostic purposes"
 
-    labeled_sentence = do_labeling(sentence, labels.dictionary)
-    sentence_dictionary = sentence_to_dictionary(labeled_sentence, dictionary_to_bag(labels.dictionary))
+    labeled_sentence = do_labeling(sentence, labels._dictionary)
+    sentence_dictionary = sentence_to_dictionary(labeled_sentence, dictionary_to_bag(labels._dictionary))
     nltk_grammar = combine_grammars((
         convert_grammar(grammar.glob),
         convert_dictionary(sentence_dictionary),
@@ -46,3 +44,7 @@ def main():
     # for tree in rd_parser.parse(labeled_tokens):
     #     for subtree in tree.subtrees():
     #         print(subtree)
+
+
+if __name__ == "__main__":
+    main()

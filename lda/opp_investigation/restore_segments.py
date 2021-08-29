@@ -115,8 +115,8 @@ def restore_segments():
 
     all_segments = split_segments(all_segments)
 
-    # with open(os.path.join(resources, "datasets/all_annotations.json"), "w") as f:
-    #     json.dump(all_annotations, f, indent=4, sort_keys=True)
+    with open(os.path.join(resources, "datasets/all_annotations.json"), "w") as f:
+        json.dump(all_annotations, f, indent=4, sort_keys=True)
 
     with open(os.path.join(resources, "datasets/all_segments.json"), "w") as f:
         json.dump(all_segments, f, indent=4, sort_keys=True)

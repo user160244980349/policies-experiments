@@ -3,8 +3,6 @@ import os
 import re
 from math import sqrt
 from pprint import pprint
-from random import random
-from collections import Counter
 import plotly.express as px
 
 import plotly.graph_objects as go
@@ -12,9 +10,7 @@ from gensim.models import LdaModel
 
 from tools.fsys import files
 from config import resources
-from initialization.initialization import initialize
-from lsa.lsa import Lsa
-from lsa.restore_segments import clear_segments, restore_segments
+from lda.meco_paper.lsa import Lsa
 
 
 def get_scatter_lda_p(model, name, aspect, t1=0, t2=1, t3=2):
@@ -22,8 +18,8 @@ def get_scatter_lda_p(model, name, aspect, t1=0, t2=1, t3=2):
     y = []
     z = []
     for p in aspect:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model.get_document_topics(doc, minimum_probability=0)
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model.get_document_topics(doc, minimum_probability=0)
         x.append(similarity[t1][1])
         y.append(similarity[t2][1])
         z.append(similarity[t3][1])
@@ -34,8 +30,8 @@ def get_scatter2d_lda_p(model, name, aspect, t1=0, t2=1):
     x = []
     y = []
     for p in aspect:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model.get_document_topics(doc, minimum_probability=0)
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model.get_document_topics(doc, minimum_probability=0)
         x.append(similarity[t1][1])
         y.append(similarity[t2][1])
     return go.Scatter(x=x, y=y, name=name, mode="markers", marker=dict(sizemode='diameter', size=5))
@@ -45,16 +41,16 @@ def get_affiliation(model, aspect, file="affiliations.txt"):
     with open(os.path.join(resources, file), "w", encoding="utf-8") as f:
 
         print("\n\n\nTopics:", file=f)
-        pprint(model.lsa_model.print_topics(num_topics=model.lsa_model.num_topics,
-                                            num_words=10), stream=f)
+        pprint(model._model.print_topics(num_topics=model._model.num_topics,
+                                         num_words=10), stream=f)
         i = 0
         for p in aspect:
-            doc = model.dictionary.doc2bow(p[1].lower().split())
+            doc = model._dictionary.doc2bow(p[1].lower().split())
             print("\n\n\n--------------------------------", file=f)
             print(f"\nId:\n{i}", file=f)
             print(f"\nData practice:\n{p[0]}", file=f)
             print(f"\nTopics & Affiliations:", file=f)
-            pprint(model.lsa_model.get_document_topics(doc, minimum_probability=.0), stream=f)
+            pprint(model._model.get_document_topics(doc, minimum_probability=.0), stream=f)
             print("\nText:", file=f)
             pprint(p[1], stream=f)
             i += 1
@@ -65,13 +61,13 @@ def get_scatter_lda(model, name, aspect, t1=0, t2=1, t3=2):
     y = []
     z = []
     for p in aspect:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model[doc]
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model.topics_count):
+        for i in range(model._topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -87,13 +83,13 @@ def get_scatter2d_lda(model, name, aspect, t1=0, t2=1):
     x = []
     y = []
     for p in aspect:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model[doc]
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model.topics_count):
+        for i in range(model._topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -109,13 +105,13 @@ def get_scatter_lsi(model, name, aspect, t1=0, t2=1, t3=2):
     y = []
     z = []
     for p in aspect:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model[doc]
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model.topics_count):
+        for i in range(model._topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -132,13 +128,13 @@ def get_scatter2d_lsi(model, name, aspect, t1=0, t2=1):
     x = []
     y = []
     for p in aspect:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model[doc]
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model.topics_count):
+        for i in range(model._topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -153,8 +149,8 @@ def get_scatter2d_lsi(model, name, aspect, t1=0, t2=1):
 def volume(model, topic, aspects, threshold=0.9):
     v = 0
     for p in aspects:
-        doc = model.dictionary.doc2bow(p[1].lower().split())
-        similarity = model.lsa_model.get_document_topics(doc, minimum_probability=0)
+        doc = model._dictionary.doc2bow(p[1].lower().split())
+        similarity = model._model.get_document_topics(doc, minimum_probability=0)
         if similarity[topic][1] > threshold:
             v += 1
     return v
@@ -165,7 +161,6 @@ def extract_class(paragraphs: list, category: str):
 
 
 def render_affiliations(model, segments):
-
     topic_x = 0
     topic_y = 1
     topic_x = int(input())
@@ -234,12 +229,12 @@ def render_amounts(segments):
 def render_volumes(model, segments, threshold=.5, file=f"volumes.txt"):
 
     classes = list(set([p[0].strip() for p in segments]))
-    topics = [f"Topic {i}" for i in range(model.lsa_model.num_topics)]
+    topics = [f"Topic {i}" for i in range(model._model.num_topics)]
 
     y = []
     for i in range(len(classes)):
         y.append([volume(model, t, extract_class(segments, classes[i]), threshold=threshold) if volume(model, t, extract_class(segments, classes[i]), threshold=threshold) > 3 else 0
-                  for t in range(model.lsa_model.num_topics)])
+                  for t in range(model._model.num_topics)])
 
     mx = max([len(c) for c in classes])
 
@@ -347,10 +342,10 @@ def render_groups(model, paragraphs, file="to_groups.txt"):
         i = 0
 
         for p in paragraphs:
-            doc = model.dictionary.doc2bow(p[1].lower().split())
+            doc = model._dictionary.doc2bow(p[1].lower().split())
             print("\n\n\n--------------------------------", file=f)
             print(f"\nId:\n{i}", file=f)
-            affs = model.lsa_model.get_document_topics(doc, minimum_probability=.4)
+            affs = model._model.get_document_topics(doc, minimum_probability=.4)
             
             print(f"\nGroup:", file=f)
 
@@ -440,10 +435,10 @@ def render_groups_opp(model, paragraphs, file="to_groups.txt"):
     with open(os.path.join(resources, file), "w", encoding="utf-8") as f:
         i = 0
         for p in paragraphs:
-            doc = model.dictionary.doc2bow(p[1].lower().split())
+            doc = model._dictionary.doc2bow(p[1].lower().split())
             print("\n\n\n--------------------------------", file=f)
             print(f"\nId:\n{i}", file=f)
-            affs = model.lsa_model.get_document_topics(doc, minimum_probability=.4)
+            affs = model._model.get_document_topics(doc, minimum_probability=.4)
             
             print(f"\nGroups:", file=f)
 
@@ -731,7 +726,7 @@ def make_model(corpus, model, load=True, file="models/some_model"):
 
     lsa = Lsa(corpus, freq=model, model="lda")
 
-    # lsa.best_coherence(stop=30, start=2, step=3)
+    # lda.best_coherence(stop=30, start=2, step=3)
     lsa.topics_count = 15
 
     lsa.preprocess_data()
@@ -751,313 +746,10 @@ def print_topics(topics, file="topics.txt"):
         pprint(topics, stream=f)
 
 
-def clean_iot():
-    fs = files("datasets/iot", r".*")
-    for f in fs:
-        Converter.plain_webpage(f)
-
-
-def calculate_structure_elements():
-    with open(os.path.join(resources, "datasets/plain.json"), "r", encoding="utf-8") as f:
-        stats = json.load(f)
-
-    hashes = []
-    unique_stats = []
-    for s in stats:
-        if s["policy_hash"] not in hashes and s["statistics"] is not None:
-            hashes.append(s["policy_hash"])
-            unique_stats.append(s["statistics"])
-
-    stats1 = unique_stats[:296]
-    stats2 = unique_stats[296:592]
-    
-    keys = ["list items", "ordered lists", "unordered lists", "tables", "paragraphs", "headings"]
-
-    _map = {
-        "list items": "Элемент списка", 
-        "ordered lists": "Нумерованный список", 
-        "unordered lists": "Ненумерованный список", 
-        "tables": "Таблица", 
-        "paragraphs": "Абзац", 
-        "headings": "Заголовок"
-    }
-
-    data = [
-        go.Bar(
-            name=_map[k],
-            y=[v[k] for v in stats1])
-        for k in keys
-    ]
-
-    fig2 = go.Figure(data=data)
-    fig2.update_yaxes(tickformat="т")
-    fig2.update_layout(
-        barmode="stack",
-        font=dict(
-            family="Times New Roman",
-            color="#000",
-            size=20,
-        ),
-        colorway=px.colors.qualitative.Dark24,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="left",
-            x=0
-        )
-    )
-    fig2.show()
-
-    data = [
-        go.Bar(
-            name=_map[k],
-            y=[v[k] for v in stats2])
-        for k in keys
-    ]
-
-    fig2 = go.Figure(data=data)
-    fig2.update_yaxes(tickformat="т")
-    fig2.update_layout(
-        barmode="stack",
-        font=dict(
-            family="Times New Roman",
-            color="#000",
-            size=20,
-        ),
-        colorway=px.colors.qualitative.Dark24,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="left",
-            x=0
-        )
-    )
-    fig2.show()
-
-    
-def calculate_structure_elements_small():
-    with open(os.path.join(resources, "datasets/plain.json"), "r", encoding="utf-8") as f:
-        stats = json.load(f)
-
-    hashes = []
-    unique_stats = []
-    for s in stats:
-        if s["policy_hash"] not in hashes and s["statistics"] is not None:
-            hashes.append(s["policy_hash"])
-            unique_stats.append(s["statistics"])
-    
-    s = {
-        "list items": 0, 
-        "ordered lists": 0, 
-        "unordered lists": 0, 
-        "tables": 0, 
-        "paragraphs": 0, 
-        "headings": 0
-    }
-
-    for st in unique_stats:
-        for k in s.keys():
-            s[k] += st[k]
-
-    keys = ["list items", "ordered lists", "unordered lists", "tables", "paragraphs", "headings"]
-    _map = {
-        "list items": "Элемент списка", 
-        "ordered lists": "Нумерованный список", 
-        "unordered lists": "Ненумерованный список", 
-        "tables": "Таблица", 
-        "paragraphs": "Абзац", 
-        "headings": "Заголовок"
-    }
-
-    data = [
-        go.Bar(
-            name=_map[k],
-            y=(s[k],),
-            x=("",))
-        for k in keys
-    ]
-
-    fig2 = go.Figure(data=data)
-    fig2.update_yaxes(tickformat="т")
-    fig2.update_layout(
-        barmode="stack",
-        font=dict(
-            family="Times New Roman",
-            color="#000",
-            size=20,
-        ),
-        colorway=px.colors.qualitative.Dark24,
-        legend=dict(
-            orientation="h",
-            yanchor="top",
-            xanchor="left",
-            x=1,
-            y=1
-        )
-    )
-    fig2.show()
-
-
-def clusterize_by_1():
-
-    paragraphs_labeled = []
-
-    with open(os.path.join(resources, "datasets/plain_policies/mi.com-global-about-privacy.html.txt"), 
-              "r", encoding="utf-8") as fl:
-        paragraphs_labeled.extend([("?", p) for p in fl.read().split("\n")])
-
-    paragraphs_labeled = [p for p in paragraphs_labeled if len(p[1]) >= 100]
-    paragraphs = [p[1] for p in paragraphs_labeled]
-
-    iot_tfidf = make_model(paragraphs, model="tf-idf", load=True, file="models/iot_tfidf")
-    topics = iot_tfidf.lsa_model.print_topics(num_topics=iot_tfidf.lsa_model.num_topics, num_words=10)
-
-    policies = []
-
-    fs = files("datasets/plain_policies", r".*")
-    for f in fs:
-        with open(f, "r", encoding="utf-8") as fl:
-            policies.append([("?", p) for p in fl.read().split("\n") if len(p) >= 100])
-
-    groupped = [render_groups(iot_tfidf, p)[1] for p in policies]
-    groupped = [Counter(g) for g in groupped]
-    
-    stats1 = groupped[:296]
-    stats2 = groupped[296:592]
-    
-    keys = [n["name"] for n in render_groups(iot_tfidf, [])[2]]
-
-    data = [
-        go.Bar(
-            name=k,
-            y=[v[k] for v in stats1])
-        for k in keys
-    ]
-
-    fig2 = go.Figure(data=data)
-    fig2.update_yaxes(tickformat="т")
-    fig2.update_layout(
-        barmode="stack",
-        font=dict(
-            family="Times New Roman",
-            color="#000",
-            size=20,
-        ),
-        colorway=px.colors.qualitative.Dark24,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="left",
-            x=0
-        )
-    )
-    fig2.show()
-
-    data = [
-        go.Bar(
-            name=k,
-            y=[v[k] for v in stats2])
-        for k in keys
-    ]
-
-    fig2 = go.Figure(data=data)
-    fig2.update_yaxes(tickformat="т")
-    fig2.update_layout(
-        barmode="stack",
-        font=dict(
-            family="Times New Roman",
-            color="#000",
-            size=20,
-        ),
-        colorway=px.colors.qualitative.Dark24,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="left",
-            x=0
-        )
-    )
-    fig2.show()
-
-    
-def clusterize_by_1_small():
-
-    paragraphs_labeled = []
-
-    with open(os.path.join(resources, "datasets/plain_policies/mi.com-global-about-privacy.html.txt"), 
-              "r", encoding="utf-8") as fl:
-        paragraphs_labeled.extend([("?", p) for p in fl.read().split("\n")])
-
-    paragraphs_labeled = [p for p in paragraphs_labeled if len(p[1]) >= 100]
-    paragraphs = [p[1] for p in paragraphs_labeled]
-
-    iot_tfidf = make_model(paragraphs, model="tf-idf", load=True, file="models/iot_tfidf")
-    topics = iot_tfidf.lsa_model.print_topics(num_topics=iot_tfidf.lsa_model.num_topics, num_words=10)
-
-    policies = []
-
-    fs = files("datasets/plain_policies", r".*")
-    for f in fs:
-        with open(f, "r", encoding="utf-8") as fl:
-            policies.append([("?", p) for p in fl.read().split("\n") if len(p) >= 100])
-
-    groupped = [render_groups(iot_tfidf, p)[1] for p in policies]
-    groupped = [Counter(g) for g in groupped]
-    
-    keys = [n["name"] for n in render_groups(iot_tfidf, [])[2]]
-
-    s = Counter({})
-    for st in groupped:
-        s += st
-
-    _map = {
-        "Privacy policy changes": "Обновление политики",
-        "Special audience: California residents": "Особая аудитория (калифорнийцы)",
-        "Data security": "Защита данных",
-        "First party collection: personal and account information": "Сбор от 1-х лиц (песональные данные и аккаунт)",
-        "Right to erase": "Право пользователя на удаление",
-        "Third-party sharing in case of company acquisition and merging": "Распространение 3-м лицам в случае поглощения компании",
-        "First-party collection: right to edit, access, with specified (legal) basis of data processing": "Пользовательский доступ, изменение и удаление",
-        "Other": "Другое",
-        "First-party collection: device and service specific information": "Сбор от 1-х лиц (данные об устройстве и приложении)",
-        "Special audience: children": "Особая аудитория (дети)",
-        "First party collection: browser and device information": "Сбор от 1-х лиц (данные о браузере)",
-        "Contact information: company": "Контактная информация компании",
-        "Third parties sharing for marketing purposes": "Распространение 3-м лицам в рекламных целях",
-        "First party collection Opt-in, opt-out messages and notifications to end user": "Сбор от 1-х лиц, подписка/отписка и уведомления для пользователя"
-    }
-
-    data = [
-        go.Bar(
-            name=_map[k],
-            y=[s[k]],
-            x=[""])
-        for k in keys
-    ]
-
-    fig2 = go.Figure(data=data)
-    fig2.update_yaxes(tickformat="т")
-    fig2.update_layout(
-        barmode="stack",
-        font=dict(
-            family="Times New Roman",
-            color="#000",
-            size=20,
-        ),
-        colorway=px.colors.qualitative.Dark24,
-        legend=dict(
-            orientation="h",
-            yanchor="top",
-            xanchor="left",
-            y=1,
-            x=1
-        )
-    )
-    fig2.show()
+# def clean_iot():
+#     fs = files("datasets/iot_dataset", r".*")
+#     for f in fs:
+#         Converter.plain_webpage(f)
 
     
 def work_opp(load=True):
@@ -1130,7 +822,6 @@ def work_iot(load=False):
     # paragraphs_labeled = [p for p in paragraphs_labeled if len(p[1]) > 0]
 
     # render_heatmap(topics)
-    
     # render_affiliations(iot_tfidf, paragraphs_labeled)
     # render_volumes(iot_tfidf, paragraphs_labeled, threshold=.3)
 
@@ -1145,31 +836,30 @@ def work_iot(load=False):
 
     #  FIGURE
     # paragraphs_labeled = [p for p in paragraphs_labeled if len(p[1]) >= 100]
-    # paragraphs = [p[1] for p in paragraphs_labeled]
     # render_volumes(iot_tfidf, paragraphs_labeled, threshold=.2)
     # get_affiliation(iot_tfidf, paragraphs_labeled)
     # render_groups(iot_tfidf, paragraphs_labeled)
 
     #  FIGURE
-    paragraphs_labeled = []
-    paragraphs_labeled = get_iot_fulltexts(paragraphs_labeled)
-    calculate_policies_lengths(paragraphs_labeled)
+    # paragraphs_labeled = []
+    # paragraphs_labeled = get_iot_fulltexts(paragraphs_labeled)
+    # calculate_policies_lengths(paragraphs_labeled)
 
     #  FIGURE
-    paragraphs_labeled = []
-    get_iot_paragraphs(paragraphs_labeled)
-    paragraphs_labeled = [p for p in paragraphs_labeled if len(p[1]) >= 1]
-    calculate_lengths(paragraphs_labeled)
+    # paragraphs_labeled = []
+    # get_iot_paragraphs(paragraphs_labeled)
+    # paragraphs_labeled = [p for p in paragraphs_labeled if len(p[1]) >= 1]
+    # calculate_lengths(paragraphs_labeled)
 
 
 def main():
-
     # initialize()
     # restore_segments()
     # clean_iot()
 
     work_opp(load=True)
-    # work_iot(load=True)
+    work_iot(load=True)
 
-    # calculate_structure_elements_small()
-    # clusterize_by_1_small()
+
+if __name__ == "__main__":
+    main()
