@@ -18,8 +18,8 @@ def get_scatter_lda_p(model, name, aspect, t1=0, t2=1, t3=2):
     y = []
     z = []
     for p in aspect:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model.get_document_topics(doc, minimum_probability=0)
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model.get_document_topics(doc, minimum_probability=0)
         x.append(similarity[t1][1])
         y.append(similarity[t2][1])
         z.append(similarity[t3][1])
@@ -30,8 +30,8 @@ def get_scatter2d_lda_p(model, name, aspect, t1=0, t2=1):
     x = []
     y = []
     for p in aspect:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model.get_document_topics(doc, minimum_probability=0)
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model.get_document_topics(doc, minimum_probability=0)
         x.append(similarity[t1][1])
         y.append(similarity[t2][1])
     return go.Scatter(x=x, y=y, name=name, mode="markers", marker=dict(sizemode='diameter', size=5))
@@ -41,16 +41,16 @@ def get_affiliation(model, aspect, file="affiliations.txt"):
     with open(os.path.join(resources, file), "w", encoding="utf-8") as f:
 
         print("\n\n\nTopics:", file=f)
-        pprint(model._model.print_topics(num_topics=model._model.num_topics,
+        pprint(model.lsa_model.print_topics(num_topics=model.lsa_model.num_topics,
                                          num_words=10), stream=f)
         i = 0
         for p in aspect:
-            doc = model._dictionary.doc2bow(p[1].lower().split())
+            doc = model.dictionary.doc2bow(p[1].lower().split())
             print("\n\n\n--------------------------------", file=f)
             print(f"\nId:\n{i}", file=f)
             print(f"\nData practice:\n{p[0]}", file=f)
             print(f"\nTopics & Affiliations:", file=f)
-            pprint(model._model.get_document_topics(doc, minimum_probability=.0), stream=f)
+            pprint(model.lsa_model.get_document_topics(doc, minimum_probability=.0), stream=f)
             print("\nText:", file=f)
             pprint(p[1], stream=f)
             i += 1
@@ -61,13 +61,13 @@ def get_scatter_lda(model, name, aspect, t1=0, t2=1, t3=2):
     y = []
     z = []
     for p in aspect:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model[doc]
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model._topics_count):
+        for i in range(model.topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -83,13 +83,13 @@ def get_scatter2d_lda(model, name, aspect, t1=0, t2=1):
     x = []
     y = []
     for p in aspect:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model[doc]
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model._topics_count):
+        for i in range(model.topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -105,13 +105,13 @@ def get_scatter_lsi(model, name, aspect, t1=0, t2=1, t3=2):
     y = []
     z = []
     for p in aspect:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model[doc]
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model._topics_count):
+        for i in range(model.topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -128,13 +128,13 @@ def get_scatter2d_lsi(model, name, aspect, t1=0, t2=1):
     x = []
     y = []
     for p in aspect:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model[doc]
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model[doc]
 
         sdict = {k: v for k, v in similarity}
         new_s = []
 
-        for i in range(model._topics_count):
+        for i in range(model.topics_count):
             try:
                 new_s.append((i, sdict[i]))
             except KeyError:
@@ -149,8 +149,8 @@ def get_scatter2d_lsi(model, name, aspect, t1=0, t2=1):
 def volume(model, topic, aspects, threshold=0.9):
     v = 0
     for p in aspects:
-        doc = model._dictionary.doc2bow(p[1].lower().split())
-        similarity = model._model.get_document_topics(doc, minimum_probability=0)
+        doc = model.dictionary.doc2bow(p[1].lower().split())
+        similarity = model.lsa_model.get_document_topics(doc, minimum_probability=0)
         if similarity[topic][1] > threshold:
             v += 1
     return v
@@ -229,12 +229,12 @@ def render_amounts(segments):
 def render_volumes(model, segments, threshold=.5, file=f"volumes.txt"):
 
     classes = list(set([p[0].strip() for p in segments]))
-    topics = [f"Topic {i}" for i in range(model._model.num_topics)]
+    topics = [f"Topic {i}" for i in range(model.lsa_model.num_topics)]
 
     y = []
     for i in range(len(classes)):
         y.append([volume(model, t, extract_class(segments, classes[i]), threshold=threshold) if volume(model, t, extract_class(segments, classes[i]), threshold=threshold) > 3 else 0
-                  for t in range(model._model.num_topics)])
+                  for t in range(model.lsa_model.num_topics)])
 
     mx = max([len(c) for c in classes])
 
@@ -342,10 +342,10 @@ def render_groups(model, paragraphs, file="to_groups.txt"):
         i = 0
 
         for p in paragraphs:
-            doc = model._dictionary.doc2bow(p[1].lower().split())
+            doc = model.dictionary.doc2bow(p[1].lower().split())
             print("\n\n\n--------------------------------", file=f)
             print(f"\nId:\n{i}", file=f)
-            affs = model._model.get_document_topics(doc, minimum_probability=.4)
+            affs = model.lsa_model.get_document_topics(doc, minimum_probability=.4)
             
             print(f"\nGroup:", file=f)
 
@@ -435,10 +435,10 @@ def render_groups_opp(model, paragraphs, file="to_groups.txt"):
     with open(os.path.join(resources, file), "w", encoding="utf-8") as f:
         i = 0
         for p in paragraphs:
-            doc = model._dictionary.doc2bow(p[1].lower().split())
+            doc = model.dictionary.doc2bow(p[1].lower().split())
             print("\n\n\n--------------------------------", file=f)
             print(f"\nId:\n{i}", file=f)
-            affs = model._model.get_document_topics(doc, minimum_probability=.4)
+            affs = model.lsa_model.get_document_topics(doc, minimum_probability=.4)
             
             print(f"\nGroups:", file=f)
 
