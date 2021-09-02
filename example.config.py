@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+import os
 
 # Paths to resources
-resources = "/home/user/Source/repos/policies-experiments/resources"
+resources = os.path.expanduser("~/Source/repos/policies-experiments/resources")
