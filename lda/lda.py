@@ -6,12 +6,16 @@ from gensim.models import CoherenceModel, LdaModel, TfidfModel
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+
 from config import resources
+from initialization.initialization import initialize
 
 
 class LDA:
 
     def __init__(self, docs, freq="bow", topics_count=0, start=2, step=3, stop=30, saved=None):
+
+        initialize()
 
         self._doc_set = docs
         self._freq = freq

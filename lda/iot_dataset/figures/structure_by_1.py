@@ -7,14 +7,11 @@ import plotly.graph_objects as go
 from config import resources
 
 
-_map = {
-    "list items": "Элемент списка",
-    "ordered lists": "Нумерованный список",
-    "unordered lists": "Ненумерованный список",
-    "tables": "Таблица",
-    "paragraphs": "Абзац",
-    "headings": "Заголовок"
-}
+#################################################
+#                                               #
+#   Graph 1                                     #
+#                                               #
+#################################################
 
 hashes = []
 unique_stats = []
@@ -32,56 +29,85 @@ stats2 = unique_stats[296:592]
 
 keys = ["list items", "ordered lists", "unordered lists", "tables", "paragraphs", "headings"]
 
-data = [
-    go.Bar(
-        name=_map[k],
-        y=[v[k] for v in stats1])
-    for k in keys
-]
 
-fig2 = go.Figure(data=data)
-fig2.update_yaxes(tickformat="т")
-fig2.update_layout(
-    barmode="stack",
-    font=dict(
-        family="Times New Roman",
-        color="#000",
-        size=20,
-    ),
-    colorway=px.colors.qualitative.Dark24,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="left",
-        x=0
+fig = go.Figure()
+
+for i, k in enumerate(keys):
+    fig.add_bar(
+        name=k.capitalize(),
+        y=[v[k] for v in stats1],
+        x=[i for i in range(296)]
     )
-)
-fig2.show()
 
-data = [
-    go.Bar(
-        name=_map[k],
-        y=[v[k] for v in stats2])
-    for k in keys
-]
-
-fig2 = go.Figure(data=data)
-fig2.update_yaxes(tickformat="т")
-fig2.update_layout(
-    barmode="stack",
+fig.update_annotations(
     font=dict(
-        family="Times New Roman",
-        color="#000",
-        size=20,
+        size=40,
     ),
-    colorway=px.colors.qualitative.Dark24,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="left",
-        x=0
-    )
 )
-fig2.show()
+
+fig.update_layout(
+    title="Privacy policies` structure elements for each document",
+    barmode="stack",
+    width=2100,
+    height=900,
+    # legend=dict(
+    #     orientation="h",
+    #     yanchor="bottom",
+    #     xanchor="left",
+    #     y=1,
+    #     x=0
+    # ),
+    colorway=px.colors.qualitative.Dark24,
+    font=dict(
+        size=24,
+    ),
+)
+
+fig.update_xaxes(showgrid=True, title_text='Privacy policies` documents')
+fig.update_yaxes(showgrid=True, title_text='Structure elements` presences')
+fig.show()
+
+
+#################################################
+#                                               #
+#   Graph 2                                     #
+#                                               #
+#################################################
+
+fig = go.Figure()
+
+for i, k in enumerate(keys):
+    fig.add_bar(
+        name=k.capitalize(),
+        y=[v[k] for v in stats2],
+        x=[i for i in range(296, 592)]
+    )
+
+
+fig.update_annotations(
+    font=dict(
+        size=40,
+    ),
+)
+
+fig.update_layout(
+    title="Privacy policies` structure elements for each document",
+    barmode="stack",
+    width=2100,
+    height=900,
+    # legend=dict(
+    #     orientation="h",
+    #     yanchor="bottom",
+    #     xanchor="left",
+    #     y=1,
+    #     x=0
+    # ),
+    colorway=px.colors.qualitative.Dark24,
+    font=dict(
+        size=24,
+    ),
+)
+
+fig.update_xaxes(showgrid=True, title_text='Privacy policies` documents')
+fig.update_yaxes(showgrid=True, title_text='Structure elements` presences')
+fig.show()

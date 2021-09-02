@@ -1,11 +1,11 @@
 
 groups = [
     {
-        "name": "First party collection Opt-in, opt-out messages and notifications to end user",
+        "name": "First party collection: opt-in, opt-out<br>messages and notifications to end user",
         "topics": [0],
     },
     {
-        "name": "Third parties sharing for marketing purposes",
+        "name": "Third parties sharing for marketing<br>purposes",
         "topics": [1],
     },
     {
@@ -13,7 +13,7 @@ groups = [
         "topics": [2],
     },
     {
-        "name": "First party collection: browser and device information",
+        "name": "First party collection: browser and<br>device information",
         "topics": [3],
     },
     {
@@ -21,7 +21,7 @@ groups = [
         "topics": [4],
     },
     {
-        "name": "First-party collection: device and service specific information",
+        "name": "First-party collection: device and service<br>specific information",
         "topics": [5],
     },
     {
@@ -29,11 +29,11 @@ groups = [
         "topics": [6, 8],
     },
     {
-        "name": "First-party collection: right to edit, access, with specified (legal) basis of data processing",
+        "name": "First-party collection: right to edit, access,<br>with specified (legal) basis of data processing",
         "topics": [7],
     },
     {
-        "name": "Third-party sharing in case of company acquisition and merging",
+        "name": "Third-party sharing in case of company<br>acquisition and merging",
         "topics": [9],
     },
     {
@@ -41,7 +41,7 @@ groups = [
         "topics": [10],
     },
     {
-        "name": "First party collection: personal and account information",
+        "name": "First party collection: personal and<br>account information",
         "topics": [11],
     },
     {

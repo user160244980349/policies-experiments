@@ -2,28 +2,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 from collections import Counter
+
 from lda.iot_dataset.figures.dependency import aggregate_groups
 from lda.iot_dataset.figures.groups import groups
 from lda.lda import LDA
 from tools.fsys import files
-
-
-_map = {
-    "Privacy policy changes": "Обновление политики",
-    "Special audience: California residents": "Особая аудитория (калифорнийцы)",
-    "Data security": "Защита данных",
-    "First party collection: personal and account information": "Сбор от 1-х лиц (песональные данные и аккаунт)",
-    "Right to erase": "Право пользователя на удаление",
-    "Third-party sharing in case of company acquisition and merging": "Распространение 3-м лицам в случае поглощения компании",
-    "First-party collection: right to edit, access, with specified (legal) basis of data processing": "Пользовательский доступ, изменение и удаление",
-    "Other": "Другое",
-    "First-party collection: device and service specific information": "Сбор от 1-х лиц (данные об устройстве и приложении)",
-    "Special audience: children": "Особая аудитория (дети)",
-    "First party collection: browser and device information": "Сбор от 1-х лиц (данные о браузере)",
-    "Contact information: company": "Контактная информация компании",
-    "Third parties sharing for marketing purposes": "Распространение 3-м лицам в рекламных целях",
-    "First party collection Opt-in, opt-out messages and notifications to end user": "Сбор от 1-х лиц, подписка/отписка и уведомления для пользователя"
-}
 
 
 paragraphs_labeled = []
@@ -40,64 +23,101 @@ for f in fs:
     with open(f, "r", encoding="utf-8") as fl:
         policies.append([("?", p) for p in fl.read().split("\n") if len(p) >= 100])
 
-groupped = [aggregate_groups(iot_tfidf, p, groups)[1] for p in policies]
-groupped = [Counter(g) for g in groupped]
-
-stats1 = groupped[:296]
-stats2 = groupped[296:592]
+grouped = [aggregate_groups(iot_tfidf, p, groups)[1] for p in policies]
+grouped = [Counter(g) for g in grouped]
 
 keys = [g["name"] for g in groups]
 
-data = [
-    go.Bar(
+
+#################################################
+#                                               #
+#   Graph 1                                     #
+#                                               #
+#################################################
+
+stats1 = grouped[:296]
+
+fig = go.Figure()
+
+for i, k in enumerate(keys):
+    fig.add_bar(
         name=k,
-        y=[v[k] for v in stats1])
-    for k in keys
-]
-
-fig2 = go.Figure(data=data)
-fig2.update_yaxes(tickformat="т")
-fig2.update_layout(
-    barmode="stack",
-    font=dict(
-        family="Times New Roman",
-        color="#000",
-        size=20,
-    ),
-    colorway=px.colors.qualitative.Dark24,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="left",
-        x=0
+        y=[v[k] for v in stats1],
+        x=[i for i in range(296)]
     )
-)
-fig2.show()
 
-data = [
-    go.Bar(
+fig.update_annotations(
+    font=dict(
+        size=40,
+    ),
+)
+
+fig.update_layout(
+    # margin=dict(l=0, r=0, t=300, b=0),
+    title="Privacy policies` aspects for each document",
+    barmode="stack",
+    width=2100,
+    height=900,
+    # legend=dict(
+    #     orientation="h",
+    #     yanchor="bottom",
+    #     xanchor="left",
+    #     y=1,
+    #     x=0
+    # ),
+    colorway=px.colors.qualitative.Dark24,
+    font=dict(
+        size=24,
+    ),
+)
+
+fig.update_xaxes(showgrid=True, title_text='Privacy policies` documents')
+fig.update_yaxes(showgrid=True, title_text='Aspects` presences')
+fig.show()
+
+
+#################################################
+#                                               #
+#   Graph 2                                     #
+#                                               #
+#################################################
+
+stats2 = grouped[296:592]
+
+fig = go.Figure()
+
+for i, k in enumerate(keys):
+    fig.add_bar(
         name=k,
-        y=[v[k] for v in stats2])
-    for k in keys
-]
-
-fig2 = go.Figure(data=data)
-fig2.update_yaxes(tickformat="т")
-fig2.update_layout(
-    barmode="stack",
-    font=dict(
-        family="Times New Roman",
-        color="#000",
-        size=20,
-    ),
-    colorway=px.colors.qualitative.Dark24,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="left",
-        x=0
+        y=[v[k] for v in stats2],
+        x=[i for i in range(296, 592)]
     )
+
+fig.update_annotations(
+    font=dict(
+        size=30,
+    ),
 )
-fig2.show()
+
+fig.update_layout(
+    # margin=dict(l=0, r=0, t=300, b=0),
+    title="Privacy policies` aspects for each document",
+    barmode="stack",
+    width=2100,
+    height=900,
+    # legend=dict(
+    #     orientation="h",
+    #     yanchor="bottom",
+    #     xanchor="left",
+    #     y=1,
+    #     x=0
+    # ),
+    colorway=px.colors.qualitative.Dark24,
+    font=dict(
+        size=24,
+    ),
+)
+
+fig.update_xaxes(showgrid=True, title_text='Privacy policies` documents')
+fig.update_yaxes(showgrid=True, title_text='Aspects` presences')
+fig.show()
